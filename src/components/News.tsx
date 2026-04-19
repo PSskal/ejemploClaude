@@ -1,6 +1,7 @@
 "use client";
 
 import { FiArrowRight, FiCalendar, FiTag } from "react-icons/fi";
+import { useReveal } from "@/hooks/useReveal";
 
 interface NewsItem {
   id: number;
@@ -50,20 +51,22 @@ const newsItems: NewsItem[] = [
 ];
 
 export default function News() {
+  const revealRef = useReveal();
   return (
-    <section id="noticias" className="py-20 lg:py-28 bg-white">
+    <section id="noticias" className="py-20 lg:py-28 bg-white" ref={revealRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-16 gap-4">
           <div>
-            <span className="inline-block px-4 py-1 bg-[#003D7A]/10 text-[#003D7A] text-sm font-semibold rounded-full mb-4">
-              Sala de Prensa
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+            <div className="flex items-center gap-3 mb-4" data-reveal>
+              <div className="h-px w-10 bg-[#003D7A]" />
+              <span className="text-[#003D7A] text-sm font-bold uppercase tracking-widest">Sala de Prensa</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900" data-reveal data-delay="100">
               Últimas <span className="text-[#003D7A]">Noticias</span>
             </h2>
           </div>
-          <button className="flex items-center gap-2 text-[#003D7A] font-semibold hover:text-[#0099CC] transition-colors group whitespace-nowrap">
+          <button className="flex items-center gap-2 text-[#003D7A] font-semibold hover:text-[#0099CC] transition-colors group whitespace-nowrap" data-reveal data-delay="200">
             Ver todas las noticias
             <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
@@ -75,6 +78,8 @@ export default function News() {
             <article
               key={item.id}
               className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 flex flex-col"
+              data-reveal
+              data-delay={`${index * 150 + 300}`}
             >
               {/* Image placeholder */}
               <div

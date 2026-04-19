@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useReveal } from "@/hooks/useReveal";
 import {
   FiMapPin,
   FiMail,
@@ -46,6 +47,7 @@ const socialLinks = [
 ];
 
 export default function Contact() {
+  const revealRef = useReveal();
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +88,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="py-20 lg:py-28 bg-gray-50">
+    <section id="contacto" className="py-20 lg:py-28 bg-gray-50" ref={revealRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

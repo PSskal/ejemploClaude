@@ -1,149 +1,148 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FiAward, FiUsers, FiTrendingUp, FiAnchor } from "react-icons/fi";
+import { useReveal } from "@/hooks/useReveal";
+import { FiAnchor, FiAward, FiUsers, FiTrendingUp } from "react-icons/fi";
 
-interface StatCardProps {
-  value: number;
-  suffix: string;
-  label: string;
-  icon: React.ReactNode;
-  isVisible: boolean;
-  delay: number;
-}
+const STATS = [
+  { value: 25, suffix: "+", label: "Años de experiencia", icon: <FiAward className="w-5 h-5" />, color: "#003D7A" },
+  { value: 15, suffix: "+", label: "Embarcaciones propias", icon: <FiAnchor className="w-5 h-5" />, color: "#0099CC" },
+  { value: 30, suffix: "%", label: "Cuota de mercado", icon: <FiTrendingUp className="w-5 h-5" />, color: "#FF8C42" },
+  { value: 500, suffix: "+", label: "Empleados directos", icon: <FiUsers className="w-5 h-5" />, color: "#10B981" },
+];
 
-function StatCard({ value, suffix, label, icon, isVisible, delay }: StatCardProps) {
+function Counter({ value, suffix, color, isVisible, delay }: {
+  value: number; suffix: string; color: string; isVisible: boolean; delay: number;
+}) {
   const [count, setCount] = useState(0);
-
   useEffect(() => {
     if (!isVisible) return;
-    const timer = setTimeout(() => {
-      let start = 0;
-      const duration = 1800;
-      const step = Math.ceil(value / (duration / 16));
-      const interval = setInterval(() => {
-        start = Math.min(start + step, value);
-        setCount(start);
-        if (start >= value) clearInterval(interval);
-      }, 16);
-      return () => clearInterval(interval);
+    const t = setTimeout(() => {
+      let n = 0;
+      const step = Math.ceil(value / 55);
+      const iv = setInterval(() => {
+        n = Math.min(n + step, value);
+        setCount(n);
+        if (n >= value) clearInterval(iv);
+      }, 18);
+      return () => clearInterval(iv);
     }, delay);
-    return () => clearTimeout(timer);
+    return () => clearTimeout(t);
   }, [isVisible, value, delay]);
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-center">
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#003D7A] to-[#0099CC] flex items-center justify-center mx-auto mb-4 text-white">
-        {icon}
-      </div>
-      <div className="text-3xl sm:text-4xl font-bold text-[#003D7A] mb-1">
-        {isVisible ? count : 0}
-        <span className="text-[#FF8C42]">{suffix}</span>
-      </div>
-      <div className="text-gray-500 text-sm font-medium">{label}</div>
-    </div>
+    <span className="text-4xl font-black" style={{ color }}>
+      {count}<span className="text-3xl">{suffix}</span>
+    </span>
   );
 }
 
-const stats = [
-  { value: 25, suffix: "+", label: "Años de Experiencia", icon: <FiAward className="w-6 h-6" />, delay: 0 },
-  { value: 15, suffix: "+", label: "Embarcaciones Propias", icon: <FiAnchor className="w-6 h-6" />, delay: 200 },
-  { value: 30, suffix: "%", label: "Cuota de Mercado", icon: <FiTrendingUp className="w-6 h-6" />, delay: 400 },
-  { value: 500, suffix: "+", label: "Empleados Directos", icon: <FiUsers className="w-6 h-6" />, delay: 600 },
-];
+const CERTS = ["ISO 14001", "Marine Stewardship Council", "HACCP", "ISO 9001", "GMP+", "IFFO RS"];
 
 export default function About() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const revealRef = useReveal();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
+    const el = statsRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <section id="nosotros" className="py-20 lg:py-28 bg-gray-50" ref={sectionRef}>
+    <section id="nosotros" className="py-24 lg:py-32 bg-white overflow-hidden" ref={revealRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1 bg-[#003D7A]/10 text-[#003D7A] text-sm font-semibold rounded-full mb-4">
-            Quiénes Somos
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Más de 25 años navegando{" "}
-            <span className="text-[#003D7A]">con propósito</span>
-          </h2>
+
+        {/* Section label */}
+        <div className="flex items-center gap-3 mb-4" data-reveal data-delay="100">
+          <div className="h-px w-12 bg-[#003D7A]" />
+          <span className="text-[#003D7A] text-sm font-bold uppercase tracking-widest">Quiénes Somos</span>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Text */}
-          <div className="space-y-6">
-            <p className="text-gray-600 text-lg leading-relaxed">
-              PescaPeru S.A. es una empresa peruana dedicada a la extracción responsable
-              de anchoveta y la producción de harina y aceite de pescado de alta calidad.
-              Desde 1999, hemos crecido hasta convertirnos en uno de los referentes del
-              sector pesquero nacional.
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          {/* Left */}
+          <div>
+            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 leading-tight mb-6" data-reveal data-delay="200">
+              Más de 25 años<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#003D7A] to-[#0099CC]">
+                navegando con propósito
+              </span>
+            </h2>
+
+            <p className="text-gray-500 text-lg leading-relaxed mb-5" data-reveal data-delay="300">
+              PescaPeru S.A. es una empresa peruana dedicada a la extracción responsable de anchoveta
+              y la producción de harina y aceite de pescado de alta calidad. Desde 1999, hemos crecido
+              hasta convertirnos en uno de los referentes del sector pesquero nacional.
             </p>
-            <p className="text-gray-600 leading-relaxed">
-              Operamos con una flota moderna y tecnológicamente avanzada en las principales
-              zonas pesqueras del Perú, incluyendo Chimbote, Huacho y Coishco. Nuestro
-              compromiso con la sostenibilidad guía cada decisión operativa y empresarial.
-            </p>
-            <p className="text-gray-600 leading-relaxed">
-              Contamos con certificaciones internacionales que avalan la calidad de nuestros
-              procesos y productos, exportando a mercados en Europa, Asia y América del Norte.
+            <p className="text-gray-400 leading-relaxed mb-8" data-reveal data-delay="400">
+              Operamos con una flota moderna y tecnológicamente avanzada en las principales zonas
+              pesqueras del litoral peruano. Nuestro compromiso con la sostenibilidad guía cada
+              decisión operativa y empresarial, exportando a más de 30 países en Europa, Asia y América.
             </p>
 
             {/* Certifications */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              {["ISO 14001", "Marine Stewardship Council", "HACCP", "BRC Food Safety"].map((cert) => (
-                <span
-                  key={cert}
-                  className="px-3 py-1 bg-white border border-[#003D7A]/20 text-[#003D7A] text-xs font-semibold rounded-full shadow-sm"
-                >
-                  {cert}
+            <div className="flex flex-wrap gap-2 mb-8" data-reveal data-delay="500">
+              {CERTS.map((c) => (
+                <span key={c} className="px-3 py-1.5 bg-gray-50 border border-gray-200 text-gray-600 text-xs font-semibold rounded-lg hover:border-[#003D7A]/30 hover:text-[#003D7A] transition-colors cursor-default">
+                  {c}
                 </span>
               ))}
             </div>
 
             <button
-              onClick={() =>
-                document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#003D7A] text-white font-semibold rounded-full hover:bg-[#002d5a] transition-colors duration-200 shadow-md hover:shadow-lg"
+              onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#003D7A] text-white font-bold text-sm hover:bg-[#002d5a] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#003D7A]/20"
+              data-reveal data-delay="600"
             >
               Contáctanos
+              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
             </button>
           </div>
 
-          {/* Right: Image placeholder + stats */}
-          <div className="space-y-6">
-            {/* Image placeholder */}
-            <div className="relative rounded-2xl overflow-hidden h-64 sm:h-80 bg-gradient-to-br from-[#003D7A] via-[#0099CC] to-[#1F2937] shadow-xl">
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-white/80">
-                <FiAnchor className="w-16 h-16 mb-4 text-white/50" />
-                <span className="text-lg font-semibold">Flota Pesquera PescaPeru</span>
-                <span className="text-sm text-white/60 mt-1">Mar de Perú — Desde 1999</span>
-              </div>
-              {/* Decorative lines */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white/20 to-transparent" />
+          {/* Right */}
+          <div>
+            {/* Visual placeholder */}
+            <div className="relative rounded-3xl overflow-hidden h-72 mb-8 bg-gradient-to-br from-[#003D7A] to-[#0099CC]" data-reveal="right" data-delay="200">
+              {/* Grid lines */}
+              <div className="absolute inset-0 opacity-10"
+                style={{
+                  backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(to right, rgba(255,255,255,0.5) 1px, transparent 1px)",
+                  backgroundSize: "40px 40px",
+                }}
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <FiAnchor className="w-14 h-14 text-white/30 mb-4" />
+                <span className="font-bold text-lg">Flota Pesquera PescaPeru</span>
+                <span className="text-white/50 text-sm mt-1">Mar de Perú — Desde 1999</span>
+                {/* Floating badges */}
+                <div className="absolute bottom-4 left-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-3 py-2 text-sm">
+                  <span className="font-black text-[#FF8C42]">15+</span>
+                  <span className="text-white/70 ml-1.5">Embarcaciones</span>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-3 py-2 text-sm">
+                  <span className="font-black text-white">3</span>
+                  <span className="text-white/70 ml-1.5">Puertos</span>
+                </div>
               </div>
             </div>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat) => (
-                <StatCard key={stat.label} {...stat} isVisible={isVisible} />
+            <div className="grid grid-cols-2 gap-4" ref={statsRef}>
+              {STATS.map((s, i) => (
+                <div
+                  key={s.label}
+                  className="bg-gray-50 border border-gray-100 rounded-2xl p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                  data-reveal data-delay={`${300 + i * 100}`}
+                >
+                  <div className="flex items-center gap-2 mb-2" style={{ color: s.color }}>
+                    {s.icon}
+                    <span className="text-xs font-semibold uppercase tracking-wider opacity-60">{s.label}</span>
+                  </div>
+                  <Counter value={s.value} suffix={s.suffix} color={s.color} isVisible={visible} delay={i * 150} />
+                </div>
               ))}
             </div>
           </div>

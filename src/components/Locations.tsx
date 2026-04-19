@@ -1,6 +1,7 @@
 "use client";
 
 import { FiMapPin, FiPhone, FiMail, FiClock } from "react-icons/fi";
+import { useReveal } from "@/hooks/useReveal";
 
 interface Location {
   city: string;
@@ -43,25 +44,28 @@ const locations: Location[] = [
 ];
 
 export default function Locations() {
+  const revealRef = useReveal();
   return (
-    <section id="ubicaciones" className="py-20 lg:py-28 bg-gray-50">
+    <section id="ubicaciones" className="py-20 lg:py-28 bg-gray-50" ref={revealRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1 bg-[#0099CC]/10 text-[#0099CC] text-sm font-semibold rounded-full mb-4">
-            Presencia Nacional
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <div className="flex items-center justify-center gap-3 mb-4" data-reveal>
+            <div className="h-px w-10 bg-[#0099CC]" />
+            <span className="text-[#0099CC] text-sm font-bold uppercase tracking-widest">Presencia Nacional</span>
+            <div className="h-px w-10 bg-[#0099CC]" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4" data-reveal data-delay="100">
             Nuestras <span className="text-[#003D7A]">Sedes</span>
           </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-500 max-w-2xl mx-auto text-lg" data-reveal data-delay="200">
             Estratégicamente ubicados en las principales zonas pesqueras del litoral peruano
             para garantizar la máxima frescura de nuestras materias primas.
           </p>
         </div>
 
         {/* Map placeholder */}
-        <div className="relative rounded-3xl overflow-hidden h-64 sm:h-80 mb-12 bg-gradient-to-br from-[#003D7A] to-[#1F2937] shadow-xl">
+        <div className="relative rounded-3xl overflow-hidden h-64 sm:h-80 mb-12 bg-gradient-to-br from-[#003D7A] to-[#1F2937] shadow-xl" data-reveal data-delay="300">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white/70">
               <FiMapPin className="w-12 h-12 mx-auto mb-3 text-[#FF8C42]" />
@@ -103,10 +107,12 @@ export default function Locations() {
 
         {/* Location cards */}
         <div className="grid md:grid-cols-3 gap-6">
-          {locations.map((loc) => (
+          {locations.map((loc, i) => (
             <div
               key={loc.city}
               className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden border border-gray-100"
+              data-reveal
+              data-delay={`${i * 150 + 400}`}
             >
               {/* Card header */}
               <div className={`h-3 bg-gradient-to-r ${loc.color}`} />

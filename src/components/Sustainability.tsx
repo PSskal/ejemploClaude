@@ -1,6 +1,7 @@
 "use client";
 
 import { FiArrowRight, FiHeart, FiUsers, FiGlobe } from "react-icons/fi";
+import { useReveal } from "@/hooks/useReveal";
 
 interface SustainCard {
   title: string;
@@ -45,21 +46,24 @@ const pillars = [
 ];
 
 export default function Sustainability() {
+  const revealRef = useReveal();
   return (
-    <section id="sostenibilidad" className="py-20 lg:py-28 bg-[#111827]">
+    <section id="sostenibilidad" className="py-20 lg:py-28 bg-[#111827]" ref={revealRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1 bg-green-500/20 text-green-400 text-sm font-semibold rounded-full mb-4">
-            Compromiso Ambiental
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+          <div className="flex items-center justify-center gap-3 mb-4" data-reveal>
+            <div className="h-px w-10 bg-green-500/40" />
+            <span className="text-green-400 text-sm font-bold uppercase tracking-widest">Compromiso Ambiental</span>
+            <div className="h-px w-10 bg-green-500/40" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4" data-reveal data-delay="100">
             Sostenibilidad como{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0099CC] to-[#FF8C42]">
               filosofía de vida
             </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg" data-reveal data-delay="200">
             Creemos que el negocio pesquero responsable y la conservación del océano
             son inseparables. Nuestras operaciones están diseñadas para el largo plazo.
           </p>
