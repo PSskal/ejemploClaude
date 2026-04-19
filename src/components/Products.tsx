@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FiArrowRight, FiDownload, FiCheck, FiBarChart2 } from "react-icons/fi";
 
 interface Spec {
@@ -30,6 +31,7 @@ interface ProductData {
   visualLabel: string;
   visualSub: string;
   reverse: boolean;
+  detailHref: string;
 }
 
 const products: ProductData[] = [
@@ -66,6 +68,7 @@ const products: ProductData[] = [
     visualLabel: "Harina de Pescado",
     visualSub: "Steam Dried · Anchoveta peruana",
     reverse: false,
+    detailHref: "/productos/harina-de-pescado",
   },
   {
     id: "aceite",
@@ -100,6 +103,7 @@ const products: ProductData[] = [
     visualLabel: "Aceite de Pescado",
     visualSub: "Crude · Refined · Omega-3 Concentrate",
     reverse: true,
+    detailHref: "/productos/aceite-de-pescado",
   },
 ];
 
@@ -259,13 +263,20 @@ function ProductSection({ product }: { product: ProductData }) {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
-          <button
+          <Link
+            href={product.detailHref}
             className="flex items-center justify-center gap-2 px-6 py-3 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
             style={{ background: `linear-gradient(135deg, ${product.bgFrom}, ${product.accentColor})` }}
           >
-            Solicitar Cotización
+            Más información
             <FiArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
+          <Link
+            href={`${product.detailHref}#contacto`}
+            className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-gray-400 transition-all duration-200"
+          >
+            Solicitar Cotización
+          </Link>
           <button className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-gray-400 transition-all duration-200">
             <FiDownload className="w-4 h-4" />
             Ficha Técnica (PDF)
