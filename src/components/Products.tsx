@@ -1,56 +1,284 @@
 "use client";
 
-import { FiArrowRight, FiDroplet, FiPackage, FiCheck } from "react-icons/fi";
+import { FiArrowRight, FiDownload, FiCheck, FiBarChart2 } from "react-icons/fi";
 
-interface Product {
+interface Spec {
+  label: string;
+  value: string;
+  bar?: number;
+}
+
+interface Use {
+  label: string;
+  icon: string;
+}
+
+interface ProductData {
   id: string;
+  tag: string;
+  tagColor: string;
   title: string;
   subtitle: string;
   description: string;
-  features: string[];
-  icon: React.ReactNode;
-  gradient: string;
-  badgeColor: string;
+  longDesc: string;
+  specs: Spec[];
+  uses: Use[];
+  certifications: string[];
+  bgFrom: string;
+  bgTo: string;
+  accentColor: string;
+  visualLabel: string;
+  visualSub: string;
+  reverse: boolean;
 }
 
-const products: Product[] = [
+const products: ProductData[] = [
   {
     id: "harina",
+    tag: "Producto Principal",
+    tagColor: "bg-blue-600",
     title: "Harina de Pescado",
-    subtitle: "Proteína de alta calidad",
+    subtitle: "Steam Dried · FAQ · Special Grade",
     description:
-      "Producida a partir de anchoveta fresca capturada en nuestras zonas de pesca certificadas, nuestra harina de pescado es reconocida mundialmente por su alto contenido proteico (68-72%) y excelente perfil de aminoácidos.",
-    features: [
-      "Proteína cruda: 68-72%",
-      "Humedad: máx. 10%",
-      "Libre de patógenos",
-      "Certificación MSC",
+      "Nuestra harina de pescado es producida a partir de anchoveta fresca (Engraulis ringens) capturada en aguas peruanas bajo estrictas cuotas sostenibles. El proceso de secado a vapor preserva el máximo valor nutricional.",
+    longDesc:
+      "Con más de 25 años de experiencia, garantizamos consistencia lote a lote, trazabilidad completa desde la captura hasta el embarque, y cumplimiento de los estándares internacionales más exigentes del mercado.",
+    specs: [
+      { label: "Proteína Cruda", value: "68 – 72%", bar: 70 },
+      { label: "Humedad", value: "máx. 10%", bar: 10 },
+      { label: "Grasa Cruda", value: "8 – 12%", bar: 10 },
+      { label: "Ceniza", value: "máx. 16%", bar: 16 },
+      { label: "TVN", value: "máx. 120 mg/100g", bar: 40 },
+      { label: "Histamina", value: "máx. 500 ppm", bar: 25 },
     ],
-    icon: <FiPackage className="w-10 h-10" />,
-    gradient: "from-[#003D7A] via-[#005da8] to-[#0099CC]",
-    badgeColor: "bg-blue-500",
+    uses: [
+      { label: "Acuicultura", icon: "🐟" },
+      { label: "Avicultura", icon: "🐔" },
+      { label: "Porcicultura", icon: "🐷" },
+      { label: "Bovinos", icon: "🐄" },
+      { label: "Mascotas", icon: "🐾" },
+      { label: "Alimento Humano", icon: "🌾" },
+    ],
+    certifications: ["MSC", "HACCP", "ISO 9001", "GMP+", "IFFO RS"],
+    bgFrom: "#003D7A",
+    bgTo: "#0066b3",
+    accentColor: "#0099CC",
+    visualLabel: "Harina de Pescado",
+    visualSub: "Steam Dried · Anchoveta peruana",
+    reverse: false,
   },
   {
     id: "aceite",
+    tag: "Producto Estrella",
+    tagColor: "bg-orange-500",
     title: "Aceite de Pescado",
-    subtitle: "Rico en Omega-3",
+    subtitle: "Crude · Refined · Omega-3 Concentrate",
     description:
-      "Extraído mediante procesos físicos controlados, nuestro aceite de pescado preserva todos los ácidos grasos esenciales EPA y DHA. Ideal para acuicultura, suplementos nutricionales y la industria farmacéutica.",
-    features: [
-      "EPA + DHA: mín. 30%",
-      "Ácidos grasos Omega-3",
-      "Proceso sin solventes",
-      "Estándares IFFO RS",
+      "Extraído por prensado físico en frío y separación centrífuga, nuestro aceite de pescado retiene la máxima concentración de ácidos grasos EPA y DHA. Sin uso de solventes químicos en ninguna etapa del proceso.",
+    longDesc:
+      "Disponible en grados crudo, refinado y concentrado Omega-3. Cumple con las especificaciones IFFO, GOED y farmacopeas internacionales. Envasado en cisternas ISO, tambores y flexitanks según requerimiento del cliente.",
+    specs: [
+      { label: "EPA + DHA", value: "mín. 30%", bar: 30 },
+      { label: "Ácidos Grasos Omega-3", value: "mín. 26%", bar: 26 },
+      { label: "Humedad e Impurezas", value: "máx. 1%", bar: 5 },
+      { label: "Valor de Anisidina", value: "máx. 20", bar: 20 },
+      { label: "Valor de Peróxidos", value: "máx. 5 meq/kg", bar: 15 },
+      { label: "Ácidos Grasos Libres", value: "máx. 3%", bar: 10 },
     ],
-    icon: <FiDroplet className="w-10 h-10" />,
-    gradient: "from-[#1F2937] via-[#374151] to-[#003D7A]",
-    badgeColor: "bg-orange-500",
+    uses: [
+      { label: "Acuicultura", icon: "🐟" },
+      { label: "Farmacéutica", icon: "💊" },
+      { label: "Nutracéutica", icon: "🧬" },
+      { label: "Alimentos Func.", icon: "🥗" },
+      { label: "Suplementos", icon: "💪" },
+      { label: "Cosméticos", icon: "✨" },
+    ],
+    certifications: ["IFFO RS", "GOED", "ISO 14001", "HACCP", "GMP Pharma"],
+    bgFrom: "#1a1a2e",
+    bgTo: "#16213e",
+    accentColor: "#FF8C42",
+    visualLabel: "Aceite de Pescado",
+    visualSub: "Crude · Refined · Omega-3 Concentrate",
+    reverse: true,
   },
 ];
 
+function ProductSection({ product }: { product: ProductData }) {
+  return (
+    <div
+      id={`producto-${product.id}`}
+      className={`flex flex-col ${product.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} min-h-[600px]`}
+    >
+      {/* Visual panel */}
+      <div
+        className="lg:w-5/12 relative flex flex-col justify-between p-8 lg:p-12 min-h-72"
+        style={{
+          background: `linear-gradient(135deg, ${product.bgFrom}, ${product.bgTo})`,
+        }}
+      >
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div
+            className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-10"
+            style={{ background: product.accentColor }}
+          />
+          <div
+            className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full opacity-5"
+            style={{ background: product.accentColor }}
+          />
+          <div className="absolute inset-0 opacity-5"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: "32px 32px",
+            }}
+          />
+        </div>
+
+        {/* Tag */}
+        <div>
+          <span
+            className={`inline-block ${product.tagColor} text-white text-xs font-bold px-3 py-1 rounded-full mb-6`}
+          >
+            {product.tag}
+          </span>
+
+          {/* Big visual placeholder — simulates product image */}
+          <div className="relative rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 p-6 mb-6">
+            <div className="flex items-center justify-center h-40">
+              <div className="text-center">
+                <div
+                  className="text-6xl font-black opacity-20 select-none"
+                  style={{ color: product.accentColor }}
+                >
+                  {product.id === "harina" ? "F" : "O"}
+                </div>
+                <div className="text-white font-bold text-lg mt-2">
+                  {product.visualLabel}
+                </div>
+                <div className="text-white/60 text-sm mt-1">{product.visualSub}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Specs preview bars */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-white/70 text-xs font-semibold uppercase tracking-wider mb-2">
+            <FiBarChart2 className="w-3.5 h-3.5" />
+            Composición típica
+          </div>
+          {product.specs.slice(0, 3).map((spec) => (
+            <div key={spec.label}>
+              <div className="flex justify-between text-white/80 text-xs mb-1">
+                <span>{spec.label}</span>
+                <span className="font-semibold">{spec.value}</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-white/10">
+                <div
+                  className="h-1.5 rounded-full transition-all duration-1000"
+                  style={{
+                    width: `${spec.bar}%`,
+                    background: product.accentColor,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Content panel */}
+      <div className="lg:w-7/12 bg-white p-8 lg:p-12 flex flex-col justify-between">
+        <div>
+          {/* Title */}
+          <p className="text-sm font-semibold mb-2" style={{ color: product.accentColor }}>
+            {product.subtitle}
+          </p>
+          <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            {product.title}
+          </h3>
+          <p className="text-gray-600 leading-relaxed mb-3">{product.description}</p>
+          <p className="text-gray-500 text-sm leading-relaxed mb-8">{product.longDesc}</p>
+
+          {/* Full specs table */}
+          <div className="mb-8">
+            <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+              <FiBarChart2 className="w-4 h-4" style={{ color: product.accentColor }} />
+              Especificaciones Técnicas
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {product.specs.map((spec) => (
+                <div
+                  key={spec.label}
+                  className="flex justify-between items-center py-2.5 px-4 bg-gray-50 rounded-xl border border-gray-100"
+                >
+                  <span className="text-sm text-gray-600">{spec.label}</span>
+                  <span className="text-sm font-bold text-gray-900">{spec.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Applications */}
+          <div className="mb-8">
+            <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4">
+              Aplicaciones
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {product.uses.map((use) => (
+                <span
+                  key={use.label}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors cursor-default"
+                >
+                  <span>{use.icon}</span>
+                  {use.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Certifications */}
+          <div className="mb-8">
+            <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4">
+              Certificaciones
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {product.certifications.map((cert) => (
+                <div
+                  key={cert}
+                  className="flex items-center gap-1.5 px-3 py-1.5 border-2 rounded-lg text-xs font-bold"
+                  style={{ borderColor: product.accentColor, color: product.accentColor }}
+                >
+                  <FiCheck className="w-3 h-3" />
+                  {cert}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
+          <button
+            className="flex items-center justify-center gap-2 px-6 py-3 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+            style={{ background: `linear-gradient(135deg, ${product.bgFrom}, ${product.accentColor})` }}
+          >
+            Solicitar Cotización
+            <FiArrowRight className="w-4 h-4" />
+          </button>
+          <button className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-gray-400 transition-all duration-200">
+            <FiDownload className="w-4 h-4" />
+            Ficha Técnica (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Products() {
   return (
-    <section id="productos" className="py-20 lg:py-28 bg-white">
+    <section id="productos" className="py-20 lg:py-28 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -67,60 +295,34 @@ export default function Products() {
           </p>
         </div>
 
-        {/* Product Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        {/* Product sections */}
+        <div className="rounded-3xl overflow-hidden shadow-2xl divide-y divide-gray-200">
           {products.map((product) => (
+            <ProductSection key={product.id} product={product} />
+          ))}
+        </div>
+
+        {/* Bottom strip */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { label: "30+ países de exportación", icon: "🌍" },
+            { label: "Análisis por lote certificado", icon: "📋" },
+            { label: "Entrega en contenedor o granel", icon: "🚢" },
+          ].map((item) => (
             <div
-              key={product.id}
-              className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white border border-gray-100"
+              key={item.label}
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-5 py-4 shadow-sm"
             >
-              {/* Card image/header area */}
-              <div className={`relative h-52 bg-gradient-to-br ${product.gradient} flex items-center justify-center`}>
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-white blur-2xl" />
-                  <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
-                </div>
-                <div className="relative text-white/90 group-hover:scale-110 transition-transform duration-500">
-                  {product.icon}
-                </div>
-                <div className={`absolute top-4 left-4 ${product.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full`}>
-                  Exportación
-                </div>
-              </div>
-
-              {/* Card body */}
-              <div className="p-8">
-                <div className="mb-1">
-                  <span className="text-[#0099CC] text-sm font-medium">{product.subtitle}</span>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{product.title}</h3>
-                <p className="text-gray-500 leading-relaxed mb-6">{product.description}</p>
-
-                {/* Features */}
-                <ul className="space-y-2 mb-8">
-                  {product.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-3 text-sm text-gray-600">
-                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
-                        <FiCheck className="w-3 h-3 text-green-600" />
-                      </div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-gradient-to-r from-[#003D7A] to-[#0099CC] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#003D7A]/20 transition-all duration-300 group/btn">
-                  Más información
-                  <FiArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                </button>
-              </div>
+              <span className="text-2xl">{item.icon}</span>
+              <span className="text-sm font-semibold text-gray-700">{item.label}</span>
             </div>
           ))}
         </div>
 
-        {/* View all link */}
-        <div className="text-center">
+        {/* View all */}
+        <div className="text-center mt-8">
           <button className="inline-flex items-center gap-2 text-[#003D7A] font-semibold hover:text-[#0099CC] transition-colors group">
-            Ver todos los productos
+            Ver catálogo completo
             <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
